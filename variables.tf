@@ -3,5 +3,5 @@ variable "location" {
 }
 
 variable "resource_group_name" {
-  default = "epicbook-rg"
+  default = "epicbook-rg-gb1"
 }
