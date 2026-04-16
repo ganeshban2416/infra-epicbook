@@ -1,37 +1,37 @@
-resource "azurerm_resource_group" "rg" {
-  name     = var.resource_group_name
-  location = var.location
+# Use existing Resource Group
+data "azurerm_resource_group" "rg" {
+  name = var.resource_group_name
 }
 
+# Virtual Network
 resource "azurerm_virtual_network" "vnet" {
   name                = "epicbook-vnet"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
   address_space       = ["10.0.0.0/16"]
 }
 
+# Subnet
 resource "azurerm_subnet" "subnet" {
   name                 = "epicbook-subnet"
-  resource_group_name  = azurerm_resource_group.rg.name
+  resource_group_name  = data.azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = ["10.0.1.0/24"]
 }
 
-
-
 # Public IP
 resource "azurerm_public_ip" "pip" {
   name                = "epicbook-pip"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
   allocation_method   = "Dynamic"
 }
 
 # Network Interface
 resource "azurerm_network_interface" "nic" {
   name                = "epicbook-nic"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
 
   ip_configuration {
     name                          = "internal"
@@ -44,8 +44,8 @@ resource "azurerm_network_interface" "nic" {
 # Virtual Machine
 resource "azurerm_linux_virtual_machine" "vm" {
   name                = "epicbook-vm-gb"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
   size                = "Standard_D2ls_v5"
   admin_username      = "azureuser"
 
