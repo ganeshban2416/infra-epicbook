@@ -6,6 +6,7 @@ pool:
 
 steps:
 
+# Install Terraform
 - script: |
     sudo apt update
     sudo apt install -y unzip wget
@@ -14,10 +15,11 @@ steps:
     sudo mv terraform /usr/local/bin/
   displayName: Install Terraform
 
+# Check Terraform version
 - script: terraform version
   displayName: Check Terraform Version
 
-# 👉 DEBUG: show files
+# Debug (optional but useful)
 - script: ls -la
   displayName: Check Files
 
