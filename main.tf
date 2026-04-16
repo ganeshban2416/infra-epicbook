@@ -2,9 +2,6 @@ resource "azurerm_resource_group" "rg" {
   name     = var.resource_group_name
   location = var.location
 }
-variable "resource_group_name" {
-  default = "epicbook-rg-01"
-}
 
 resource "azurerm_virtual_network" "vnet" {
   name                = "epicbook-vnet"
@@ -58,7 +55,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   admin_ssh_key {
     username   = "azureuser"
-    public_key = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEuQCp+cYyIKCe3N4G2Gw15xkJFfPqAecCZLsGETawtv Ganesh@LAPTOP-034EJ4CI
+    public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEuQCp+cYyIKCe3N4G2Gw15xkJFfPqAecCZLsGETawtv Ganesh@LAPTOP-034EJ4CI"
   }
 
   os_disk {
