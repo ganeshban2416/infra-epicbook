@@ -16,10 +16,10 @@ data "azurerm_subnet" "subnet" {
   resource_group_name  = data.azurerm_resource_group.rg.name
 }
 
-# Public IP
+# Use EXISTING Public IP (IMPORTANT FIX)
 data "azurerm_public_ip" "pip" {
-  name                = "YOUR_EXISTING_IP_NAME"
-  resource_group_name = data.azurerm_resource_group.rg.name
+  name                = "GB-VM-ip"
+  resource_group_name = "rg-GB"   # ✅ FIXED (actual RG of IP)
 }
 
 # Network Interface
@@ -32,7 +32,7 @@ resource "azurerm_network_interface" "nic" {
     name                          = "internal"
     subnet_id                     = data.azurerm_subnet.subnet.id
     private_ip_address_allocation = "Dynamic"
-   public_ip_address_id = data.azurerm_public_ip.pip.id
+    public_ip_address_id          = data.azurerm_public_ip.pip.id
   }
 }
 
@@ -41,7 +41,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   name                = "epicbook-vm-gb"
   resource_group_name = data.azurerm_resource_group.rg.name
   location            = data.azurerm_resource_group.rg.location
-  size                = "Standard_D2ls_v5"
+  size                = "Standard_B1s"   # ✅ cheaper + safer
   admin_username      = "azureuser"
 
   network_interface_ids = [
