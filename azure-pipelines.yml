@@ -6,7 +6,6 @@ pool:
 
 steps:
 
-# Install Terraform
 - script: |
     sudo apt update
     sudo apt install -y unzip wget
@@ -15,13 +14,17 @@ steps:
     sudo mv terraform /usr/local/bin/
   displayName: Install Terraform
 
-# Check version
 - script: terraform version
   displayName: Check Terraform Version
 
+# 👉 DEBUG: show files
+- script: ls -la
+  displayName: Check Files
+
 # Terraform Init
-- script: terraform init
+- script: terraform init -no-color
   displayName: Terraform Init
+  workingDirectory: $(System.DefaultWorkingDirectory)
   env:
     ARM_CLIENT_ID: $(ARM_CLIENT_ID)
     ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
@@ -29,8 +32,9 @@ steps:
     ARM_TENANT_ID: $(ARM_TENANT_ID)
 
 # Terraform Plan
-- script: terraform plan
+- script: terraform plan -no-color
   displayName: Terraform Plan
+  workingDirectory: $(System.DefaultWorkingDirectory)
   env:
     ARM_CLIENT_ID: $(ARM_CLIENT_ID)
     ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
@@ -40,6 +44,7 @@ steps:
 # Terraform Apply
 - script: terraform apply -auto-approve
   displayName: Terraform Apply
+  workingDirectory: $(System.DefaultWorkingDirectory)
   env:
     ARM_CLIENT_ID: $(ARM_CLIENT_ID)
     ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
