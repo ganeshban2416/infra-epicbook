@@ -17,12 +17,9 @@ data "azurerm_subnet" "subnet" {
 }
 
 # Public IP
-resource "azurerm_public_ip" "pip" {
-  name                = "epicbook-pip"
-  location            = data.azurerm_resource_group.rg.location
+data "azurerm_public_ip" "pip" {
+  name                = "YOUR_EXISTING_IP_NAME"
   resource_group_name = data.azurerm_resource_group.rg.name
-  allocation_method   = "Static"
-  sku                 = "Standard"
 }
 
 # Network Interface
@@ -35,7 +32,7 @@ resource "azurerm_network_interface" "nic" {
     name                          = "internal"
     subnet_id                     = data.azurerm_subnet.subnet.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.pip.id
+   public_ip_address_id = data.azurerm_public_ip.pip.id
   }
 }
 
